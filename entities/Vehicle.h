@@ -1,28 +1,26 @@
 #pragma once
 
-#include <iostream>
-#include <string>
+#include "Entity.h"
 
-class Vehicle {
+class Vehicle : public Entity {
 public:
 	enum VehicleType {
 		Car,
 		Airplane
 	};
 public:
-	virtual ~Vehicle() {}
-	virtual void move() = 0;
-	std::string state() { return m_state; }
+	float set_speed(float speed) { m_speed = speed; }
+	float speed() const { return m_speed; }
 protected:
-	std::string m_state;
+	float m_speed;
 };
 
 class Car : public Vehicle {
 public:
-	void move() override { m_state = "Car is moving"; }
+	std::string me() const override { return "Car"; }
 };
 
 class Airplane : public Vehicle {
 public:
-	void move() override { m_state = "Airplane is moving"; }
+	std::string me() const override { return "Airplane"; }
 };
