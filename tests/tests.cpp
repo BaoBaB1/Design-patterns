@@ -1,8 +1,9 @@
 #include "tests.h"
-#include "creational.h"
 #include "Vehicle.h"
 #include "Shape.h"
 #include <cassert>
+#include "../creational/creational.h"
+#include "../structural/structural.h"
 
 void creationaltests::test_factory() {
   using namespace factorymethod;
@@ -35,6 +36,7 @@ void creationaltests::test_abstract_factory() {
 
 void creationaltests::test_builder() {
   using namespace builder;
+  std::cout << "\nBuilder test\n";
   Director d(std::make_unique<PrivateHouseBuilder>());
   auto house = d.construct_dwelling();
   assert(house->balcony() == 1 && house->kitchen() == 2 && house->bathroom() == 3);
@@ -68,4 +70,47 @@ void creationaltests::test_all() {
   test_builder();
   test_singleton();
   test_prototype();
+}
+
+void structuraltests::test_adapter() {
+  using namespace adapter;
+  std::cout << "\nAdapter test\n";
+  Pigeon p;
+  Seal s;
+  FlyableToSwimmableAdapter adapter(&p);
+  p.fly();                       // pigeon is flying
+  s.swim();                      // seal is swimming
+  adapter.swim();                // now pigeon is swimming
+}
+
+void structuraltests::test_decorator() {
+  using namespace decorator;
+  std::cout << "\nDecorator test\n";
+  Circle c;
+  ColoredShape cs(&c, "yellow");
+  cs.paint();                   // paint circle in yellow
+  Square sq;
+  ColoredShape cs2(&sq);
+  cs2.paint();                  // paint square in red
+}
+
+void structuraltests::test_proxy() {
+  using namespace proxy;
+  std::cout << "\nProxy test\n";
+  ServiceProxy _proxy;
+  _proxy.do_some_work();
+}
+
+void structuraltests::test_facade() {
+  using namespace facade;
+  std::cout << "\nFacade test\n";
+  SceneRenderer sc;
+  sc.render_scene();
+}
+
+void structuraltests::test_all() {
+  test_adapter();
+  test_decorator();
+  test_proxy();
+  test_facade();
 }
