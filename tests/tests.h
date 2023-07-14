@@ -16,3 +16,11 @@ namespace structuraltests {
   void test_facade();
   void test_all();
 };
+
+namespace behavioraltests {
+  void test_responsibility_chain();
+  void test_observer();
+  void test_strategy();
+  void test_visitor();
+  void test_all();
+};

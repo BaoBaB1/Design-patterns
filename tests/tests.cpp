@@ -4,6 +4,7 @@
 #include <cassert>
 #include "../creational/creational.h"
 #include "../structural/structural.h"
+#include "../behavioral/behavioral.h"
 
 void creationaltests::test_factory() {
   using namespace factorymethod;
@@ -113,4 +114,75 @@ void structuraltests::test_all() {
   test_decorator();
   test_proxy();
   test_facade();
+}
+
+void behavioraltests::test_responsibility_chain() {
+  using namespace responsibility_chain;
+  std::cout << "\nChain of responsibility test\n";
+  // 10 banknotes - 5
+  // 50 banknotes - 3
+  // sum - 200
+  const ATM atm;
+  auto cp10 = atm.dispenser10();
+  auto cp50 = atm.dispenser50();
+  int val = atm.dispense(75);
+  assert(cp10->currency_amount() == 5 && cp50->currency_amount() == 3);
+  val = atm.dispense(100);
+  assert(val == 100 && cp10->currency_amount() == 5 && cp50->currency_amount() == 1);
+  val = atm.dispense(40);
+  assert(val == 40 && cp10->currency_amount() == 1 && cp50->currency_amount() == 1);
+  val = atm.dispense(20);
+  assert(val == 0 && cp10->currency_amount() == 1 && cp50->currency_amount() == 1);
+  val = atm.dispense(60);
+  assert(val == 60 && cp10->currency_amount() == 0 && cp50->currency_amount() == 0);
+  val = atm.dispense(10);
+  assert(val == 0 && cp10->currency_amount() == 0 && cp50->currency_amount() == 0);
+  val = atm.dispense(50);
+  assert(val == 0 && cp10->currency_amount() == 0 && cp50->currency_amount() == 0);
+  const ATM atm2;
+  val = atm2.dispense(-100);
+  assert(val == 0);
+  val = atm2.dispense(0); 
+  assert(val == 0);
+}
+
+void behavioraltests::test_observer() {
+  using namespace observer;
+  std::cout << "\nObserver test\n";
+  ConcreteObserver* obs = new ConcreteObserver();
+  ConcreteObserver2* obs2 = new ConcreteObserver2();
+  Subject s;
+  s.add_observer(obs);
+  s.add_observer(obs2);
+  s.notify_all();
+  s.remove_observer(obs2);
+  s.notify_all();
+}
+
+void behavioraltests::test_strategy() {
+  using namespace strategy;
+  std::cout << "\nStrategy test\n";
+  ShoppingCart cart;
+  VisaPayment vp;
+  cart.pay(&vp, 210);
+  ShoppingCart cart2;
+  MastercardPayment mp;
+  cart2.pay(&mp, 300);
+}
+
+void behavioraltests::test_visitor() {
+  using namespace visitor;
+  std::cout << "\nVisitor test\n";
+  ShapeVisitor visitor;
+  Circle c;
+  Square sq;
+  c.visit(&visitor);
+  sq.visit(&visitor);
+}
+
+void behavioraltests::test_all() {
+  test_responsibility_chain();
+  test_observer();
+  test_strategy();
+  test_visitor();
 }

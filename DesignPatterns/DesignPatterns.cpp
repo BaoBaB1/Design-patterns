@@ -4,4 +4,5 @@ int main()
 {
   creationaltests::test_all();
   structuraltests::test_all();
+  behavioraltests::test_all();
 }

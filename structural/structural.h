@@ -47,10 +47,15 @@ namespace adapter {
 
 namespace decorator {
 
-  class ColoredShape {
+  class ColoredShape : public Shape {
   public:
     ColoredShape(Shape* sh, const std::string& color = "red") : m_wrapped(sh), m_color(color) {}
     void paint() { std::cout << "Painting " << m_wrapped->me() << " in " << m_color << " color\n"; }
+    float area() const override { return m_wrapped->area(); }
+    void draw() const override { return m_wrapped->draw(); }
+    Shape* clone() const override { return m_wrapped->clone(); }
+    void visit(visitor::IShapeVisitor* visitor) const override { m_wrapped->visit(visitor); }
+    std::string me() const { return "ColoredShapeDecorator"; }
   private:
     Shape* m_wrapped;
     std::string m_color;
@@ -117,5 +122,4 @@ namespace facade {
   private:
     std::vector<std::unique_ptr<Shape>> m_shapes;
   };
-
 };
